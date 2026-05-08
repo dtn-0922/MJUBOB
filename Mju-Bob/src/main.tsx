@@ -5,11 +5,13 @@ import { createRoot } from "react-dom/client";
 import config from "../granite.config.ts";
 import App from "./App.tsx";
 import "./index.css";
+import More from "./More.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <TDSMobileAITProvider brandPrimaryColor={config.brand.primaryColor}>
       <App />
+      <More />
     </TDSMobileAITProvider>
   </StrictMode>,
 );
