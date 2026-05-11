@@ -1,63 +1,44 @@
-import { Asset, Button, Top } from "@toss/tds-mobile";
+
 import "./App.css";
-
+//import Today from "./Today";
+import Week from "./Week";
+//import More from "./More";
+//import { useState } from "react";
+//import { Tab } from "@toss/tds-mobile";
 function App() {
-  return (
-    <>
-      <Top
-        title={<Top.TitleParagraph size={22}>반가워요</Top.TitleParagraph>}
-        subtitleBottom={
-          <Top.SubtitleParagraph size={17}>
-            앱인토스 개발을 시작해 보세요.
-          </Top.SubtitleParagraph>
-        }
-      />
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-          padding: "24px",
-        }}
-      >
-        <Button
-          as="a"
-          variant="weak"
-          href="https://developers-apps-in-toss.toss.im"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          개발자센터
-        </Button>
-        <Button
-          as="a"
-          variant="weak"
-          href="https://techchat-apps-in-toss.toss.im"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          개발자 커뮤니티
-        </Button>
-      </div>
-
-      <div
-        style={{
-          position: "fixed",
-          bottom: "24px",
-          left: "50%",
-          transform: "translateX(-50%)",
-        }}
-      >
-        <Asset.Image
-          alt="apps in toss logo"
-          frameShape={{ width: 160 }}
-          backgroundColor="transparent"
-          src={`${import.meta.env.BASE_URL}appsintoss-logo.png`}
-        />
-      </div>
-    </>
-  );
+    //const [activeTab, setActiveTab] = useState<number>(0);
+    const tabs = [
+        //{ name: "오늘의 메뉴", component: <Today /> },
+        { name: "이번주 메뉴", component: <Week /> },
+        //{ name: "더보기", component: <More /> },
+    ];
+    return (
+        <>
+        <div className="app-container">
+            <div className="content-wrapper">
+                <div className="slider" 
+                    /*style={{
+                        transform: `translateX(-${activeTab * 100}vw)`,
+                        transition: "transform 0.3s ease"
+                    }}*/
+                >
+                {tabs.map((tab) => (
+                    <div className="page-container" key={tab.name}>
+                        {tab.component}
+                    </div>
+                ))}
+                </div>
+            </div>     
+        </div>
+         {/*<div className="navigation-bar">
+               <Tab size="small" onChange={(index)=> setActiveTab(index)}>
+                    <Tab.Item selected={activeTab === 0}>오늘의 메뉴</Tab.Item>
+                    <Tab.Item selected={activeTab === 1}>이번주 메뉴</Tab.Item>
+                    <Tab.Item selected={activeTab === 2}>더보기</Tab.Item> 
+                </Tab>
+            </div>*/}
+        </>
+    );
 }
 
 export default App;
