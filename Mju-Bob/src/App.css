@@ -3,21 +3,9 @@
     width: 100vw;
     overflow: hidden;
 }
-.navigation-bar{
-  position: fixed;
-  bottom: 0;
-  z-index: 100;
-  width: 100vw;
-}
-
 .app-container{
     display: flex;
     flex-direction: column;
-}
-
-.slider{
-    display: flex;
-    width: 300vw;
 }
 .page-container{
     width: 100vw;
