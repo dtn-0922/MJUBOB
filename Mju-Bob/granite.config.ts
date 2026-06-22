@@ -8,7 +8,7 @@ export default defineConfig({
     icon: "../images/MJU_BOB_Logo.png", // 화면에 노출될 앱의 아이콘 이미지 주소로 바꿔주세요.
   },
   web: {
-    host: "10.195.191.225",
+    host: "192.168.0.11",
     port: 5173,
     commands: {
       dev: "vite --host",

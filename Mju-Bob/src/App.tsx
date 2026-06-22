@@ -3,49 +3,48 @@ import "./App.css";
 //import Today from "./tabs/Today";
 import Week from "./tabs/Week";
 //import More from "./tabs/More";
+import NoticeModal from "./utils/NoticeModal";
 import { useState, useEffect } from "react";
-import { Tab } from "@toss/tds-mobile";
+import { Tab, } from "@toss/tds-mobile";
 import styled from "styled-components";
 import {supabase} from './utils/SupabaseClient';
-import {Weekly_Data} from './utils/Type'
+import {Weekly_Data } from './utils/Type'
 
 const App =() => {
     const today = new Date()
-    const get_day = ((today.getDay() == 0 || today.getDay() == 6) ? 0 : today.getDay());
+    const get_day = ((today.getDay() == 0 || today.getDay() == 6) ? 1 : today.getDay()-1);
     const [selectedResId, setSelectedResId] = useState<string>("1");
     const [selectedDay, setSelectedDay] = useState<number>(get_day);
     const [activeTab, setActiveTab] = useState<number>(0);
     const [isSliding, setIsSliding] = useState<boolean>(false);
     const [slideLocate, setSlideLocate] = useState<number>(1);
     const [WeekData, setWeekData] = useState<Weekly_Data|null>(null);
-    //const [isLoading, setIsLoading] = useState<boolean>(true);
-    //const [error, setError] = useState<string | null>(null);
+    const [OpenModal, setOpenModal] = useState<boolean>(true);
+    
     useEffect(() => {
-    const fetchMenu = async () => {
-      try {
-        //setIsLoading(true);
-        
-        const { data, error: supabaseError } = await supabase
-          .from('Week_Data')
-          .select('*')
-          // 보통 가장 최근에 등록된 식단표 1개만 가져오므로 예시 추가
-          .order('created_at', { ascending: false })
-          .limit(1);
-        if (supabaseError) throw supabaseError;
-
-        if (data && data.length > 0) {
-          const jsonBData = data[0].Weekly_Data as Weekly_Data;
-          setWeekData(jsonBData);
-        }
+        const fetchMenu = async () => {
+            try {
+            //setIsLoading(true);
+                const { data, error: supabaseError } = await supabase
+                .from('sortResId')
+                .select('*')
+            // 보통 가장 최근에 등록된 식단표 1개만 가져오므로 예시 추가
+                .order('created_at', { ascending: false })
+                .limit(1);
+                if (supabaseError) throw supabaseError;
+                if (data && data.length > 0) {
+                const jsonBData = data[0].Weekly_Data as Weekly_Data;
+                setWeekData(jsonBData);
+                }
       /*} catch (err: any) {
         setError(err.message);*/
-      } finally {
+            } finally {
         //setIsLoading(false);
-      }
-    };
+            }
+        };
 
-    fetchMenu();
-  }, []);
+        fetchMenu();
+    }, []);  
     const getMoveWay = (before:number,after:number)=>{
         if(before<after) setSlideLocate(-1);
         else if(before>after) setSlideLocate(1);
@@ -82,17 +81,18 @@ const App =() => {
             slideLocate={slideLocate}
             WeekData = {WeekData}
             WeekMove={WeekMove}
-            ResMove={ResMove}/> },
+            ResMove={ResMove}
+            OpenModal = {setOpenModal}
+            /> },
 
         //{ name: "더보기", component: <More /> },
     ];
 
-
-
     return (
-        <>
+        <> 
         <div className="app-container">
             <div className="content-wrapper">
+                <NoticeModal OpenModal={OpenModal} setOpenModal={setOpenModal}/>
                 <Slider
                     style={{
                         transform: `translateX(-${activeTab * 100}vw)`,

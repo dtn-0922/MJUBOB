@@ -1,4 +1,4 @@
-    import {MOCK_API_RESPONSE} from '../mockData';
+
     import { Top, SegmentedControl, Tab} from '@toss/tds-mobile';
     import styled from 'styled-components';
     import Slide from '../slider/slide'
@@ -11,14 +11,21 @@
         WeekData:Weekly_Data|null;
         ResMove:(after:string)=>void;
         WeekMove:(after:number)=>void;
+        OpenModal:(value:boolean)=>void;
     }
-    const Week = ({Res_Id,selectedDay, isSliding,slideLocate,WeekData,ResMove, WeekMove}:WeekProps )=> {
+    const Week = ({Res_Id,selectedDay, isSliding,slideLocate,WeekData,ResMove, WeekMove, OpenModal}:WeekProps )=> {
         const currentMenus = (WeekData==null? ['error'] : WeekData.restaurants[parseInt(Res_Id)-1].weekly_menu[selectedDay])
+        const currentDate = (WeekData==null? ['error'] : WeekData.date[selectedDay])
         return (
             <>
             <TopArea>
-                <Top title={<Top.TitleParagraph size = {22}>이번주 중식
-                </Top.TitleParagraph>} />
+                <div style={{display:'flex'}}>
+                    <Top
+                        title={<Top.TitleParagraph size={28}>이번주 중식</Top.TitleParagraph>}
+                        right={<Top.RightButton onClick={()=>OpenModal(true)}>📢</Top.RightButton>}
+                    />
+                </div>
+                
                 <WeekDay>
                     <Tab size = "small" onChange={(index) => WeekMove(index)}>
                         <Tab.Item selected={selectedDay === 0}>월</Tab.Item>
@@ -43,15 +50,14 @@
                     transform: isSliding ? `translateX(${slideLocate * 100}vw)` : 'translateX(0)',
                     transition: isSliding ? 'transform 0.3s ease' : 'none',
                 }}>
-                    <Slide MenuList={currentMenus} Date={MOCK_API_RESPONSE.date[selectedDay][0]}/>
-                    <Slide MenuList={currentMenus} Date={MOCK_API_RESPONSE.date[selectedDay][0]}/>
-                    <Slide MenuList={currentMenus} Date={MOCK_API_RESPONSE.date[selectedDay][0]}/>
+                    <Slide MenuList={currentMenus} Date={currentDate[0]}/>
+                    <Slide MenuList={currentMenus} Date={currentDate[0]}/>
+                    <Slide MenuList={currentMenus} Date={currentDate[0]}/>
                 </MenuSlider>
             </MenuContainer>
             </>
         )
     }
-    
     
 const TopArea = styled.div`
     height: 180px;
@@ -76,4 +82,4 @@ const MenuSlider = styled.div`
     padding: 10px;
     align-items: center;
 `;
-    export default Week;
+export default Week;
