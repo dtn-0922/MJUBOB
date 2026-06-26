@@ -14,8 +14,23 @@
         OpenModal:(value:boolean)=>void;
     }
     const Week = ({Res_Id,selectedDay, isSliding,slideLocate,WeekData,ResMove, WeekMove, OpenModal}:WeekProps )=> {
-        const currentMenus = (WeekData==null? ['error'] : WeekData.restaurants[parseInt(Res_Id)-1].weekly_menu[selectedDay])
-        const currentDate = (WeekData==null? ['error'] : WeekData.date[selectedDay])
+        const currentMenus = () =>{
+            if (WeekData != null){
+                if (Res_Id === '1') return WeekData.menu.res_01[selectedDay];
+                else if (Res_Id === '2') return WeekData.menu.res_02[selectedDay];
+                else if (Res_Id === '3') return WeekData.menu.res_03[selectedDay];
+                else if (Res_Id === '4') return WeekData.menu.res_04[selectedDay];
+                else if (Res_Id === '5') return WeekData.menu.res_05[selectedDay];
+                else return ["error"];
+            }
+            else return ["loading"];
+        }
+        const currentDate = ()=>{
+            if (WeekData != null){
+                return WeekData.week_date[selectedDay];
+            }
+            else return 'error';
+        }
         return (
             <>
             <TopArea>
@@ -50,9 +65,9 @@
                     transform: isSliding ? `translateX(${slideLocate * 100}vw)` : 'translateX(0)',
                     transition: isSliding ? 'transform 0.3s ease' : 'none',
                 }}>
-                    <Slide MenuList={currentMenus} Date={currentDate[0]}/>
-                    <Slide MenuList={currentMenus} Date={currentDate[0]}/>
-                    <Slide MenuList={currentMenus} Date={currentDate[0]}/>
+                    <Slide MenuList={currentMenus()} Date={currentDate()}/>
+                    <Slide MenuList={currentMenus()} Date={currentDate()}/>
+                    <Slide MenuList={currentMenus()} Date={currentDate()}/>
                 </MenuSlider>
             </MenuContainer>
             </>
@@ -75,6 +90,7 @@ const MenuContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100vw;
+    margin-right:100vw;
 `;
 const MenuSlider = styled.div`
     display: flex;

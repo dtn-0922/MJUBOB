@@ -5,7 +5,7 @@ import Week from "./tabs/Week";
 //import More from "./tabs/More";
 import NoticeModal from "./utils/NoticeModal";
 import { useState, useEffect } from "react";
-import { Tab, } from "@toss/tds-mobile";
+import { Tab } from "@toss/tds-mobile";
 import styled from "styled-components";
 import {supabase} from './utils/SupabaseClient';
 import {Weekly_Data } from './utils/Type'
@@ -17,32 +17,33 @@ const App =() => {
     const [selectedDay, setSelectedDay] = useState<number>(get_day);
     const [activeTab, setActiveTab] = useState<number>(0);
     const [isSliding, setIsSliding] = useState<boolean>(false);
-    const [slideLocate, setSlideLocate] = useState<number>(1);
+    const [slideLocate, setSlideLocate] = useState<number>(2);
     const [WeekData, setWeekData] = useState<Weekly_Data|null>(null);
-    const [OpenModal, setOpenModal] = useState<boolean>(true);
+    const [OpenModal, setOpenModal] = useState<boolean>(false);
     
     useEffect(() => {
         const fetchMenu = async () => {
             try {
             //setIsLoading(true);
                 const { data, error: supabaseError } = await supabase
-                .from('sortResId')
+                .from('Res_Info')
                 .select('*')
             // 보통 가장 최근에 등록된 식단표 1개만 가져오므로 예시 추가
                 .order('created_at', { ascending: false })
                 .limit(1);
                 if (supabaseError) throw supabaseError;
                 if (data && data.length > 0) {
-                const jsonBData = data[0].Weekly_Data as Weekly_Data;
-                setWeekData(jsonBData);
+                    const jsonBData = data[0].Res_Menu as Weekly_Data;
+                    console.log(jsonBData);
+                    setWeekData(jsonBData);
                 }
-      /*} catch (err: any) {
-        setError(err.message);*/
+                console.log("weekdata세팅함");
+        } catch (supabaseError:unknown) {
+            console.error('여기 에러남', supabaseError);
             } finally {
         //setIsLoading(false);
             }
         };
-
         fetchMenu();
     }, []);  
     const getMoveWay = (before:number,after:number)=>{

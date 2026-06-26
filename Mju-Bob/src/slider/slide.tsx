@@ -1,7 +1,6 @@
 import { Menu } from '@toss/tds-mobile';
 import styled from "styled-components";
 interface SlideProps {
-    //SlideNum: number;
     MenuList:string[];
     Date: string;
 }

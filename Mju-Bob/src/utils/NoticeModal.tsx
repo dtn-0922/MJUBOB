@@ -1,11 +1,10 @@
 import { Modal, Button } from "@toss/tds-mobile";
-//import { useEffect } from "react";
 import { Noticification } from "./Type";
 import { useEffect, useState } from "react";
 import { supabase } from "./SupabaseClient";
 interface NoticeModalProps{
-    setOpenModal:(value:boolean)=>void;
     OpenModal : boolean;
+    setOpenModal:(value:boolean)=>void;
 }
 
 const NoticeModal = ({setOpenModal, OpenModal }:NoticeModalProps) =>{
